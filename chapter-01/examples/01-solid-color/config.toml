@@ -1,0 +1,15 @@
+# Chapter 1 Example 1: 単色表示の設定ファイル
+
+[window]
+width = 800
+height = 600
+title = "Chapter 1-1: 単色表示"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Solid Color Shader"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true

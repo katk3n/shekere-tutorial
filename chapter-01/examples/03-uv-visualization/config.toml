@@ -1,0 +1,15 @@
+# Chapter 1 Example 3: UV座標可視化の設定ファイル
+
+[window]
+width = 800
+height = 600
+title = "Chapter 1-3: UV座標の可視化"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "UV Visualization Shader"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true
