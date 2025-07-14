@@ -21,10 +21,10 @@
 
 ### Phase 1: 基礎編
 - **[Chapter 1: Hello Shader World](./chapter-01/)** - シェーダーの基本、色、座標系
+- **[Chapter 2: Time and Animation](./chapter-02/)** - 時間ベースアニメーション、sin/cos関数
+- **[Chapter 3: Coordinates and Patterns](./chapter-03/)** - 座標系と幾何学パターン
 
 ### Phase 2: 応用編（予定）
-- **Chapter 2: Time and Animation** - 時間ベースアニメーション
-- **Chapter 3: Coordinates and Patterns** - 座標系と幾何学パターン
 - **Chapter 4: Interaction** - マウス・キーボード入力
 - **Chapter 5: Audio Visualization** - 音響ビジュアライゼーション
 - **Chapter 6: MIDI Control** - MIDI機器との連携
@@ -82,6 +82,8 @@ shekere-tutorial/
 │   ├── examples/               # サンプルプロジェクト
 │   ├── exercises/              # 演習課題
 │   └── solutions/              # 解答例
+├── chapter-02/                  # Chapter 2以降も同様の構成
+├── chapter-03/                  # ...
 └── resources/                   # 共通リソース（予定）
 ```
 

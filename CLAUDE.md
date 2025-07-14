@@ -82,6 +82,12 @@ For creating accurate learning content, refer to the official shekere framework 
 - Live coding experience using hot reload functionality
 - Immediate visual feedback learning environment
 
+### Self-Directed Learning Philosophy
+- **No formal submission requirements**: All exercises are designed for personal learning and skill development
+- **Self-paced progression**: Learners can move through content at their own speed
+- **Emphasis on understanding**: Focus on comprehension rather than assignment completion
+- **Creative exploration**: Encouragement to experiment and modify examples freely
+
 ### Reference Implementation Utilization
 - Leverage existing shekere/examples/ code as educational material
 - Detailed explanation of corresponding sample code in each chapter
@@ -137,6 +143,7 @@ shekere-tutorial/
 - Understanding check problems at chapter end
 - Practical mini-projects for skill verification
 - Comprehensive evaluation through final project
+- **Note**: All exercises are designed for self-directed learning without formal submission requirements
 
 ## Localization Strategy
 
@@ -157,5 +164,35 @@ shekere-tutorial/
 2. **Phase 2 Completion**: Add application 3 chapters (Japanese)
 3. **Phase 3 Completion**: Advanced 3 chapters for complete Japanese version
 4. **Localization Phase**: English version development
+
+## Content Maintenance Guidelines
+
+### When Adding New Learning Content
+When creating or updating chapters, ensure the following maintenance tasks are completed:
+
+1. **Update Top-Level README.md (MANDATORY)**: 
+   - Add new chapter links to the appropriate phase section
+   - Update the project structure diagram to reflect new directories
+   - Ensure chapter descriptions are accurate and consistent
+   - Move chapters from "予定" (planned) to completed status
+   - **CRITICAL**: This step is mandatory and must never be skipped
+
+2. **Cross-Reference Updates**:
+   - Update any references to chapter progression in existing content
+   - Verify that all internal links are functional
+   - Check that the learning path remains coherent
+
+3. **Content Consistency**:
+   - Ensure new content follows the established structure and format
+   - Maintain consistent terminology and coding style
+   - Verify that all examples are tested and functional
+
+### README.md Update Checklist
+When adding a new chapter, the top-level README.md must be updated with:
+- [ ] Chapter added to appropriate phase section with correct link
+- [ ] Chapter description updated to match content
+- [ ] Project structure diagram updated (if needed)
+- [ ] Phase status updated (from "予定" to completed if applicable)
+- [ ] All links tested and functional
 
 Based on this strategy, we will progressively build comprehensive learning content for shader art using shekere, initially focusing on the Japanese market.
