@@ -1,0 +1,15 @@
+# Chapter 2 Example 2: sin/cos三角関数アニメーション
+
+[window]
+width = 800
+height = 600
+title = "Chapter 2-2: sin/cos三角関数アニメーション"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Sin/Cos Animation Shader"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true

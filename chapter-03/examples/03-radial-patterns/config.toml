@@ -1,0 +1,15 @@
+# Chapter 3 Example 3: 放射状パターンの設定ファイル
+
+[window]
+width = 800
+height = 600
+title = "Chapter 3-3: 放射状パターン"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Radial Patterns with atan2"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true

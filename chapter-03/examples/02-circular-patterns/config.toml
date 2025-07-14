@@ -1,0 +1,15 @@
+# Chapter 3 Example 2: 円形パターンの設定ファイル
+
+[window]
+width = 800
+height = 600
+title = "Chapter 3-2: 円形パターン"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Circular Patterns with Distance Function"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true
