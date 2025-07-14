@@ -1,0 +1,15 @@
+# Chapter 4 Solution 3: オリジナルインタラクティブパターン解答例
+
+[window]
+width = 800
+height = 600
+title = "Chapter 4 Solution 3: コズミックダンス"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Cosmic Dance - Original Interactive Pattern"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true

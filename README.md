@@ -24,8 +24,8 @@
 - **[Chapter 2: Time and Animation](./chapter-02/)** - 時間ベースアニメーション、sin/cos関数
 - **[Chapter 3: Coordinates and Patterns](./chapter-03/)** - 座標系と幾何学パターン
 
-### Phase 2: 応用編（予定）
-- **Chapter 4: Interaction** - マウス・キーボード入力
+### Phase 2: 応用編
+- **[Chapter 4: Interaction](./chapter-04/)** - マウス・キーボード入力
 - **Chapter 5: Audio Visualization** - 音響ビジュアライゼーション
 - **Chapter 6: MIDI Control** - MIDI機器との連携
 - **Chapter 7: Advanced Patterns** - 高度なパターン技法
