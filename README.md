@@ -26,7 +26,7 @@
 
 ### Phase 2: 応用編
 - **[Chapter 4: Interaction](./chapter-04/)** - マウス・キーボード入力
-- **Chapter 5: Audio Visualization** - 音響ビジュアライゼーション
+- **[Chapter 5: Audio Visualization](./chapter-05/)** - 音響ビジュアライゼーション
 - **Chapter 6: MIDI Control** - MIDI機器との連携
 - **Chapter 7: Advanced Patterns** - 高度なパターン技法
 
@@ -80,10 +80,20 @@ shekere-tutorial/
 ├── chapter-01/                  # Chapter 1: Hello Shader World
 │   ├── README.md               # 理論解説とガイド
 │   ├── examples/               # サンプルプロジェクト
-│   ├── exercises/              # 演習課題
-│   └── solutions/              # 解答例
+│   │   ├── 01-solid-color/
+│   │   ├── 02-gradient/
+│   │   └── 03-uv-visualization/
+│   └── exercises/              # 演習課題（解答例を含む）
+│       ├── 01-favorite-colors/     # 演習課題1: 好きな色の作成
+│       │   ├── README.md           # 課題説明
+│       │   ├── config.toml         # shekere設定
+│       │   └── fragment.wgsl       # 解答例
+│       ├── 02-gradient-variations/ # 演習課題2: グラデーションの変化
+│       └── 03-creative-challenge/  # 演習課題3: 創作課題
 ├── chapter-02/                  # Chapter 2以降も同様の構成
 ├── chapter-03/                  # ...
+├── chapter-04/                  # ...
+├── chapter-05/                  # ...
 └── resources/                   # 共通リソース（予定）
 ```
 

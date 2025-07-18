@@ -103,8 +103,20 @@ shekere-tutorial/
 ├── chapter-01/ (chapter folders)
 │   ├── README.md (chapter description - Japanese)
 │   ├── examples/ (sample code with Japanese comments)
-│   ├── exercises/ (practice problems - Japanese)
-│   └── solutions/ (solution examples - Japanese)
+│   │   ├── 01-solid-color/
+│   │   ├── 02-gradient/
+│   │   └── 03-uv-visualization/
+│   └── exercises/ (exercise problems with solutions - Japanese)
+│       ├── 01-favorite-colors/
+│       │   ├── README.md (exercise description)
+│       │   ├── config.toml (shekere configuration)
+│       │   └── fragment.wgsl (solution example)
+│       ├── 02-gradient-variations/
+│       └── 03-creative-challenge/
+├── chapter-02/ (similar structure)
+├── chapter-03/ (similar structure) 
+├── chapter-04/ (similar structure)
+├── chapter-05/ (similar structure)
 ├── resources/ (shared resources)
 └── en/ (future English version directory)
     └── [mirrored structure for English content]
@@ -114,7 +126,7 @@ shekere-tutorial/
 1. **理論解説 (Theory Explanation)**: Concept and WGSL syntax explanation in Japanese
 2. **サンプルコード (Sample Code)**: Working shekere projects with Japanese comments
 3. **ステップバイステップ解説 (Step-by-Step Breakdown)**: Detailed code explanation in Japanese
-4. **演習課題 (Exercises)**: Progressive modification and extension tasks in Japanese
+4. **演習課題 (Exercises)**: Self-contained exercise directories with both problem description and solution example in Japanese
 5. **発展課題 (Advanced Challenges)**: Creative freedom projects in Japanese
 
 ## Target Audience

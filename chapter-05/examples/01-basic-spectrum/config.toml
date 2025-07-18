@@ -1,0 +1,20 @@
+# Chapter 5 Example 1: 基本的なスペクトラム表示設定ファイル
+
+[window]
+width = 800
+height = 600
+title = "Chapter 5-1: 基本的なスペクトラム表示"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Basic Spectrum Visualization"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[spectrum]
+min_frequency = 20.0
+max_frequency = 4000.0
+sampling_rate = 44100
+
+[hot_reload]
+enabled = true

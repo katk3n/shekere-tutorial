@@ -1,0 +1,20 @@
+# Chapter 5 Example 2: 周波数バーの可視化設定ファイル
+
+[window]
+width = 800
+height = 800
+title = "Chapter 5-2: 周波数バーの可視化"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Frequency Bars Visualization"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[spectrum]
+min_frequency = 20.0
+max_frequency = 4000.0
+sampling_rate = 44100
+
+[hot_reload]
+enabled = true

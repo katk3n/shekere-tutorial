@@ -1,0 +1,20 @@
+# Chapter 5 Example 3: 音響リアクティブな色変化設定ファイル
+
+[window]
+width = 800
+height = 600
+title = "Chapter 5-3: 音響リアクティブな色変化"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Audio Reactive Colors"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[spectrum]
+min_frequency = 27.0
+max_frequency = 2000.0
+sampling_rate = 44100
+
+[hot_reload]
+enabled = true
