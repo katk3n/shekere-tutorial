@@ -1,0 +1,20 @@
+# Chapter 5 Solution 1: 基本的なスペクトラム表示の実装 - 解答例
+
+[window]
+width = 800
+height = 600
+title = "Chapter 5 Solution 1: 基本的なスペクトラム表示の実装"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Basic Spectrum Display Solution"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[spectrum]
+min_frequency = 27.0
+max_frequency = 2000.0
+sampling_rate = 44100
+
+[hot_reload]
+enabled = true
