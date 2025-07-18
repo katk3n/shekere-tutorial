@@ -82,6 +82,12 @@ For creating accurate learning content, refer to the official shekere framework 
 - Live coding experience using hot reload functionality
 - Immediate visual feedback learning environment
 
+### Progressive Artwork Creation
+- **Structured Exercise Approach**: Each chapter features exercises that progressively build a complete artwork
+- **Step-by-Step Development**: Learners create one cohesive piece through multiple stages, seeing tangible progress at each step
+- **Technical Integration**: Each step introduces new technical concepts while building upon previous work
+- **Achievement-Oriented Learning**: Clear milestone completion provides motivation and sense of accomplishment
+
 ### Self-Directed Learning Philosophy
 - **No formal submission requirements**: All exercises are designed for personal learning and skill development
 - **Self-paced progression**: Learners can move through content at their own speed
@@ -106,13 +112,14 @@ shekere-tutorial/
 │   │   ├── 01-solid-color/
 │   │   ├── 02-gradient/
 │   │   └── 03-uv-visualization/
-│   └── exercises/ (exercise problems with solutions - Japanese)
-│       ├── 01-favorite-colors/
-│       │   ├── README.md (exercise description)
+│   └── exercises/ (progressive artwork creation - Japanese)
+│       ├── 01-basic-circle/
+│       │   ├── README.md (step description)
 │       │   ├── config.toml (shekere configuration)
-│       │   └── fragment.wgsl (solution example)
-│       ├── 02-gradient-variations/
-│       └── 03-creative-challenge/
+│       │   └── fragment.wgsl (step implementation)
+│       ├── 02-concentric-circles/
+│       ├── 03-radial-pattern/
+│       └── 04-final-polish/
 ├── chapter-02/ (similar structure)
 ├── chapter-03/ (similar structure) 
 ├── chapter-04/ (similar structure)
@@ -126,8 +133,8 @@ shekere-tutorial/
 1. **理論解説 (Theory Explanation)**: Concept and WGSL syntax explanation in Japanese
 2. **サンプルコード (Sample Code)**: Working shekere projects with Japanese comments
 3. **ステップバイステップ解説 (Step-by-Step Breakdown)**: Detailed code explanation in Japanese
-4. **演習課題 (Exercises)**: Self-contained exercise directories with both problem description and solution example in Japanese
-5. **発展課題 (Advanced Challenges)**: Creative freedom projects in Japanese
+4. **演習課題 (Exercises)**: Progressive artwork creation through multiple steps, each building upon the previous step in Japanese
+5. **発展課題 (Advanced Challenges)**: Creative freedom projects and variations in Japanese
 
 ## Target Audience
 

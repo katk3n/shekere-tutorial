@@ -1,13 +1,13 @@
-# Exercise 1 Solution: 好きな色の作成
+# 演習 1: 基本の円を描く
 
 [window]
 width = 800
-height = 600
-title = "Exercise 1 Solution: 色の作成"
+height = 800
+title = "演習 1: 基本の円を描く"
 
 [[pipeline]]
 shader_type = "fragment"
-label = "Color Creation Shader"
+label = "Basic Circle Shader"
 entry_point = "fs_main"
 file = "fragment.wgsl"
 

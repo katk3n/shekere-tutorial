@@ -395,8 +395,9 @@ Chapter 1を完了したら、以下を確認してください：
 
 ## 演習課題
 
-- `exercises/exercise-01.md`: 単色表示の応用
-- `exercises/exercise-02.md`: グラデーションの変化
-- `exercises/exercise-03.md`: 創作課題
+本章では、段階的に「太陽の輪」という作品を制作していきます。4つのステップを通して基本的な技術を学習し、最終的に完成した作品を作り上げます。
 
-各演習の解答例は`solutions/`フォルダにあります。
+- `exercises/01-basic-circle/`: 基本の円を描く
+- `exercises/02-concentric-circles/`: 同心円パターンを作る  
+- `exercises/03-radial-pattern/`: 放射状パターンを加える
+- `exercises/04-final-polish/`: 最終調整とエフェクト

@@ -1,0 +1,15 @@
+# 演習 3: 放射状パターンを加える
+
+[window]
+width = 800
+height = 800
+title = "演習 3: 放射状パターンを加える"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Radial Pattern Shader"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true

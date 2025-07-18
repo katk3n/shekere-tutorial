@@ -1,13 +1,13 @@
-# Exercise 3 Solution: 創作課題 - 太陽の輪
+# 演習 2: 同心円パターンを作る
 
 [window]
 width = 800
 height = 800
-title = "Exercise 3 Solution: 太陽の輪"
+title = "演習 2: 同心円パターンを作る"
 
 [[pipeline]]
 shader_type = "fragment"
-label = "Solar Rings Creative Shader"
+label = "Concentric Circles Shader"
 entry_point = "fs_main"
 file = "fragment.wgsl"
 

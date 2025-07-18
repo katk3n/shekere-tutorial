@@ -67,7 +67,7 @@ cargo install shekere
 1. **環境構築**: 上記のインストール手順に従ってshekereをセットアップ
 2. **Chapter 1から開始**: [chapter-01](./chapter-01/)フォルダのREADME.mdを読む
 3. **段階的学習**: 各章を順番に進める
-4. **実践重視**: サンプルコードを実行し、演習課題に取り組む
+4. **作品制作アプローチ**: 演習課題では1つの作品を段階的に完成させる形式で学習
 
 ---
 
@@ -83,13 +83,11 @@ shekere-tutorial/
 │   │   ├── 01-solid-color/
 │   │   ├── 02-gradient/
 │   │   └── 03-uv-visualization/
-│   └── exercises/              # 演習課題（解答例を含む）
-│       ├── 01-favorite-colors/     # 演習課題1: 好きな色の作成
-│       │   ├── README.md           # 課題説明
-│       │   ├── config.toml         # shekere設定
-│       │   └── fragment.wgsl       # 解答例
-│       ├── 02-gradient-variations/ # 演習課題2: グラデーションの変化
-│       └── 03-creative-challenge/  # 演習課題3: 創作課題
+│   └── exercises/              # 段階的作品制作演習
+│       ├── 01-basic-circle/        # ステップ1: 基本の円を描く
+│       ├── 02-concentric-circles/  # ステップ2: 同心円パターン
+│       ├── 03-radial-pattern/      # ステップ3: 放射状パターン
+│       └── 04-final-polish/        # ステップ4: 最終調整（完成）
 ├── chapter-02/                  # Chapter 2以降も同様の構成
 ├── chapter-03/                  # ...
 ├── chapter-04/                  # ...
