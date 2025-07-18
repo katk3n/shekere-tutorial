@@ -1,13 +1,13 @@
-# Chapter 5 Solution 2: 周波数帯域別の色分け - 解答例
+# Chapter 5 Solution 2: 音響波形ビジュアライザー - 解答例
 
 [window]
 width = 800
 height = 600
-title = "Chapter 5 Solution 2: 周波数帯域別の色分け"
+title = "Chapter 5 Solution 2: 音響波形ビジュアライザー"
 
 [[pipeline]]
 shader_type = "fragment"
-label = "Frequency Band Color Coding Solution"
+label = "Audio Waveform Visualizer Solution"
 entry_point = "fs_main"
 file = "fragment.wgsl"
 

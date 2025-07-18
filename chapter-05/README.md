@@ -717,6 +717,6 @@ Chapter 5を完了したら、以下を確認してください：
 ## 演習課題
 
 - `exercises/exercise-01.md`: 音響駆動幾何学パターン
-- `exercises/exercise-02.md`: 音響ランドスケープジェネレーター
+- `exercises/exercise-02.md`: 音響波形ビジュアライザー
 
 各演習の解答例は`solutions/`フォルダにあります。
