@@ -1,13 +1,13 @@
-# Chapter 2 Solution 1: 演習課題1の解答例
+# Chapter 2 Exercise 1: 静的パターンの作成
 
 [window]
 width = 800
 height = 600
-title = "Chapter 2 Solution 1: 演習課題1の解答例"
+title = "Chapter 2 Exercise 1: 静的パターンの作成"
 
 [[pipeline]]
 shader_type = "fragment"
-label = "Exercise 1 Solution Shader"
+label = "Static Pattern Shader"
 entry_point = "fs_main"
 file = "fragment.wgsl"
 
