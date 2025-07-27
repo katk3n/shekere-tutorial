@@ -1,9 +1,7 @@
-# Chapter 3 Solution 3: 創作課題 - 解答例
-
 [window]
+title = "Chapter 3 - Exercise 4: Final Flower Artwork"
 width = 800
 height = 600
-title = "Chapter 3 Solution 3: 創作課題 - 花の生命力"
 
 [[pipeline]]
 shader_type = "fragment"

@@ -87,6 +87,7 @@ For creating accurate learning content, refer to the official shekere framework 
 - **Step-by-Step Development**: Learners create one cohesive piece through multiple stages, seeing tangible progress at each step
 - **Technical Integration**: Each step introduces new technical concepts while building upon previous work
 - **Achievement-Oriented Learning**: Clear milestone completion provides motivation and sense of accomplishment
+- **Iterative Code Development**: Each exercise step requires learners to modify and extend the code from the previous step, ensuring continuous progression rather than starting from scratch
 
 ### Self-Directed Learning Philosophy
 - **No formal submission requirements**: All exercises are designed for personal learning and skill development
@@ -134,6 +135,9 @@ shekere-tutorial/
 2. **サンプルコード (Sample Code)**: Working shekere projects with Japanese comments
 3. **ステップバイステップ解説 (Step-by-Step Breakdown)**: Detailed code explanation in Japanese
 4. **演習課題 (Exercises)**: Progressive artwork creation through multiple steps, each building upon the previous step in Japanese
+   - **Code Progression Pattern**: Each step requires modifying the previous step's code rather than independent implementations
+   - **Cumulative Learning**: Students copy and modify code from Step N to create Step N+1
+   - **Technical Evolution**: Each step adds specific new techniques while preserving previous functionality
 5. **発展課題 (Advanced Challenges)**: Creative freedom projects and variations in Japanese
 
 ## Target Audience
@@ -205,6 +209,7 @@ When creating or updating chapters, ensure the following maintenance tasks are c
    - Ensure new content follows the established structure and format
    - Maintain consistent terminology and coding style
    - Verify that all examples are tested and functional
+   - **Exercise Code Progression**: Ensure each exercise step builds upon the previous step's code with clear "前ステップから継承" (inherited from previous step) and "新規追加" (newly added) annotations in comments
 
 ### README.md Update Checklist
 When adding a new chapter, the top-level README.md must be updated with:

@@ -88,8 +88,18 @@ shekere-tutorial/
 │       ├── 02-concentric-circles/  # ステップ2: 同心円パターン
 │       ├── 03-radial-pattern/      # ステップ3: 放射状パターン
 │       └── 04-final-polish/        # ステップ4: 最終調整（完成）
-├── chapter-02/                  # Chapter 2以降も同様の構成
-├── chapter-03/                  # ...
+├── chapter-02/                  # Chapter 2: Time and Animation
+│   └── exercises/
+│       ├── 01-static-patterns/     # ステップ1: 静止パターンの作成
+│       ├── 02-time-animation/      # ステップ2: 基本時間アニメーション
+│       ├── 03-complex-time-effects/ # ステップ3: 複雑時間効果
+│       └── 04-final-spiral-artwork/ # ステップ4: 最終螺旋作品
+├── chapter-03/                  # Chapter 3: Coordinates and Patterns
+│   └── exercises/
+│       ├── 01-basic-coordinate-transformations/ # ステップ1: 基本座標変換
+│       ├── 02-distance-and-angle-patterns/      # ステップ2: 距離・角度パターン
+│       ├── 03-multi-layer-petals/              # ステップ3: 多層花びらパターン
+│       └── 04-final-flower-artwork/            # ステップ4: 最終作品「花の生命力」
 ├── chapter-04/                  # ...
 ├── chapter-05/                  # ...
 └── resources/                   # 共通リソース（予定）
