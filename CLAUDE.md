@@ -102,6 +102,32 @@ For creating accurate learning content, refer to the official shekere framework 
 
 ## Content Structure
 
+### Examples vs Exercises Design Philosophy
+
+**Examples (理論例)**:
+- **Purpose**: Pure theoretical demonstrations of individual techniques
+- **Scope**: Single concept focus with minimal code complexity
+- **Code Length**: Typically 10-20 lines of core shader code
+- **Complexity**: As simple as possible while demonstrating the concept clearly
+- **Role**: Enable learners to understand "what this technique does" and "why it's useful"
+- **Independence**: Each example stands alone and doesn't depend on others
+- **Usage**: Quick reference and concept verification during learning
+
+**Exercises (演習課題)**:
+- **Purpose**: Practical application through progressive artwork creation
+- **Scope**: Multi-technique integration building complete artworks
+- **Code Length**: Progressive complexity, from simple to advanced (20-100+ lines)
+- **Complexity**: Deliberately increases with each step to build mastery
+- **Role**: Enable learners to apply techniques in creative, meaningful contexts
+- **Progression**: Each exercise step builds upon the previous step's code
+- **Usage**: Hands-on skill development and portfolio creation
+
+**Key Principles**:
+- **Clear Separation**: Examples focus on theory, exercises focus on practice
+- **Complementary Learning**: Examples provide understanding, exercises provide experience
+- **Optimal Cognitive Load**: Simple examples prevent confusion, progressive exercises build confidence
+- **Learner Guidance**: Clear role distinction helps learners know where to focus their attention
+
 ### Directory Structure
 ```
 shekere-tutorial/

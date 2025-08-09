@@ -1,11 +1,11 @@
 [window]
-title = "Chapter 3 - Exercise 1: Basic Coordinate Transformations"
+title = "Chapter 3 - Exercise 2: Grid Patterns"
 width = 800
 height = 600
 
 [[pipeline]]
 shader_type = "fragment"
-label = "Basic Coordinate Transformations"
+label = "Grid Patterns"
 entry_point = "fs_main"
 file = "fragment.wgsl"
 
