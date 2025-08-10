@@ -25,41 +25,138 @@
 - **確定的ランダム性**: 同じ座標で常に同じ値を生成
 - **3パターン統合**: 規則性と不規則性のバランス調整
 
-## 実装手順
+## 段階的実装手順
 
-### 段階的コード発展（前ステップからの継承を明記）
+このexerciseでは、Exercise 2の螺旋+格子パターンをベースに、以下の6つのステップを順番に実装することで、ノイズ統合パターンを段階的に理解し構築します。
 
+### Step 1: Exercise 2のコードから開始
+
+**目標**: 前のExerciseの完成コード（螺旋+格子）をベースとして開始
+
+**Exercise 2から継承するコード**:
 ```wgsl
-// カスタム関数（Exercise 2から継承 + 新規追加）
-fn rotate_uv(uv: vec2<f32>, angle: f32) -> vec2<f32> { /* 継承 */ }
+// Exercise 2から継承: rotate_uv関数
+fn rotate_uv(uv: vec2<f32>, angle: f32) -> vec2<f32> { /* 実装略 */ }
 
-fn pseudo_random(uv: vec2<f32>) -> f32 {  // 新規追加
+// Exercise 2から継承: 螺旋+格子パターン
+let spiral_pattern = fract(normalized_angle * 3.0 + distance * 5.0);
+let grid_pattern = /* 格子パターンの実装 */;
+let combined_pattern = spiral_pattern * 0.7 + grid_pattern * 0.3;
+let color = vec3(combined_pattern * 0.3, combined_pattern * 0.8, combined_pattern * 0.6);
+```
+
+**解説**: Exercise 2の螺旋+格子パターンのコードをそのまま使用します。このベースにノイズパターンを追加していきます。
+
+**確認方法**: Exercise 2と同じ緑青色の螺旋+格子パターンが表示されることを確認してください。
+
+---
+
+### Step 2: pseudo_random関数の実装と動作確認
+
+**目標**: ハッシュ関数による疑似乱数生成関数を実装し、動作を確認する
+
+**新規追加コード**:
+```wgsl
+// 新規追加: 疑似乱数生成関数
+fn pseudo_random(uv: vec2<f32>) -> f32 {
     return fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
-@fragment
-fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
-    let uv = NormalizedCoords(in.position.xy);
-    
-    // 【前ステップから継承】螺旋+格子パターン
-    let spiral_pattern = /* Exercise 1の螺旋パターン */;
-    let grid_pattern = /* Exercise 2の格子パターン */;
-    let spiral_grid_combined = spiral_pattern * 0.7 + grid_pattern * 0.3;
-    
-    // 【新規追加】ノイズパターン
-    let noise_scale = 10.0;
-    let noise_uv = floor(uv * noise_scale) / noise_scale;  // セル化
-    let noise_pattern = pseudo_random(noise_uv);
-    
-    // 【新規追加】3パターンの統合
-    let final_pattern = spiral_grid_combined * 0.8 + noise_pattern * 0.2;
-    
-    // 自然の調和をイメージした色彩
-    let color = vec3(final_pattern * 0.6, final_pattern * 0.8, final_pattern * 0.5);
-    
-    return vec4(ToLinearRgb(color), 1.0);
-}
+// テスト: pseudo_random関数を試してみる
+let random_value = pseudo_random(uv);
+let color = vec3(random_value, random_value, random_value);
 ```
+
+**解説**: `pseudo_random()`関数はハッシュ関数による確定的な疑似乱数を生成します。同じ座標では常に同じ値を生成するため、再現可能なノイズパターンが作成できます。
+
+**確認方法**: 画面全体にグレーのノイズパターンが表示されることを確認してください。
+
+---
+
+### Step 3: 座標のセル化によるノイズパターン生成
+
+**目標**: `floor()`によって座標をセル化し、セルごとにノイズ値を適用する
+
+**新規追加コード**:
+```wgsl
+// 新規追加: セル化されたノイズパターンの作成
+let noise_scale = 10.0;
+let noise_uv = floor(uv * noise_scale) / noise_scale;  // 座標のセル化
+let noise_pattern = pseudo_random(noise_uv);
+
+// 変更: セル化されたノイズパターンを表示
+let color = vec3(noise_pattern, noise_pattern, noise_pattern);
+```
+
+**解説**: `floor(uv * scale) / scale`により、座標を離散的なセルに分割します。各セルが一様なノイズ値を持つため、ピクセル化されたノイズパターンが生成されます。
+
+**確認方法**: Step 2より粗いセル状のノイズパターンが表示されることを確認してください。
+
+---
+
+### Step 4: 3パターン（螺旋+格子+ノイズ）の統合
+
+**目標**: 螺旋、格子、ノイズの3つのパターンを統合する
+
+**新規追加コード**:
+```wgsl
+// 再追加: 螺旋パターン（Exercise 1から継承）
+let distance = length(uv);
+let angle = atan2(uv.y, uv.x);
+let normalized_angle = (angle + PI) / (2.0 * PI);
+let spiral_pattern = fract(normalized_angle * 3.0 + distance * 5.0);
+
+// 再追加: 格子パターン（Exercise 2から継承）
+let grid_pattern = /* Exercise 2の格子パターンコード */;
+
+// 新規追加: 段階的統合
+let spiral_grid_combined = spiral_pattern * 0.7 + grid_pattern * 0.3;
+let final_pattern = spiral_grid_combined * 0.8 + noise_pattern * 0.2;
+
+// 変更: 複合パターンを白黒で表示
+let color = vec3(final_pattern, final_pattern, final_pattern);
+```
+
+**解説**: まず螺旋と格子を合成（0.7:0.3）し、その結果にノイズを追加（0.8:0.2）します。段階的な統合により、各パターンの特徴を保持しつつ自然な調和を実現します。
+
+**確認方法**: 螺旋と格子の構造にノイズが加わった複合パターンが白黒で表示されることを確認してください。
+
+---
+
+### Step 5: 合成比率の調整と最適化
+
+**目標**: パターンの合成比率を調整して最適なバランスを見つける
+
+**変更コード**:
+```wgsl
+// 変更: 最適化された合成比率
+let spiral_grid_combined = spiral_pattern * 0.7 + grid_pattern * 0.3;  // 規則的パターン
+let final_pattern = spiral_grid_combined * 0.8 + noise_pattern * 0.2;  // 不規則性を20%追加
+```
+
+**解説**: 螺旋70% + 格子30%で規則的パターンを作り、そこにノイズ20%を追加することで、秩序と混沌の理想的なバランスを実現します。
+
+**確認方法**: Step 4と似ていますが、より調和の取れた複合パターンが表示されることを確認してください。
+
+---
+
+### Step 6: 自然をイメージした色彩システム（最終完成）
+
+**目標**: 茶〜緑系の色彩で自然の調和を表現して完成
+
+**変更コード**:
+```wgsl
+// 変更: 自然の調和をイメージした茶〜緑系の色彩
+let color = vec3(
+    final_pattern * 0.6,            // 赤成分（茶色味）
+    final_pattern * 0.8,            // 緑成分（強め、自然の色）
+    final_pattern * 0.5             // 青成分（低め）
+);
+```
+
+**解説**: RGB成分を調整して自然らしい茶〜緑系の色彩を実現します。緑を強めにすることで、森や大地のような自然の調和を表現します。
+
+**確認方法**: 美しい茶緑色の螺旋+格子+ノイズの複合パターンが表示されることを確認してください。完成です！
 
 ### 技術解説
 

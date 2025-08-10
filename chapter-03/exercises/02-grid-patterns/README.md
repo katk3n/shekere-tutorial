@@ -24,49 +24,149 @@
 - **smoothstep() エッジ**: 滑らかなエッジを持つ格子線
 - **max() 統合**: 水平・垂直線の統合による格子形成
 
-## 実装手順
+## 段階的実装手順
 
-### 段階的コード発展（前ステップからの継承を明記）
+このexerciseでは、Exercise 1の螺旋パターンをベースに、以下の6つのステップを順番に実装することで、格子パターンを段階的に理解し構築します。
 
+### Step 1: Exercise 1のコードから開始
+
+**目標**: 前のExerciseの完成コードをベースとして開始
+
+**Exercise 1から継承するコード**:
 ```wgsl
-// カスタム関数（新規追加）
+// Exercise 1から継承: 螺旋パターン
+let distance = length(uv);
+let angle = atan2(uv.y, uv.x);
+let normalized_angle = (angle + PI) / (2.0 * PI);
+let spiral_pattern = fract(normalized_angle * 3.0 + distance * 5.0);
+let color = vec3(spiral_pattern * 0.6, spiral_pattern * 0.4, spiral_pattern);
+```
+
+**解説**: Exercise 1の螺旋パターンのコードをそのまま使用します。このベースに格子パターンを追加していきます。
+
+**確認方法**: Exercise 1と同じ青紫色の螺旋パターンが表示されることを確認してください。
+
+---
+
+### Step 2: rotate_uv関数の実装と動作確認
+
+**目標**: 座標回転のためのカスタム関数を実装し、動作を確認する
+
+**新規追加コード**:
+```wgsl
+// 新規追加: 座標回転関数
 fn rotate_uv(uv: vec2<f32>, angle: f32) -> vec2<f32> {
     let cos_a = cos(angle);
     let sin_a = sin(angle);
-    return vec2(uv.x * cos_a - uv.y * sin_a, uv.x * sin_a + uv.y * cos_a);
+    return vec2(
+        uv.x * cos_a - uv.y * sin_a,
+        uv.x * sin_a + uv.y * cos_a
+    );
 }
 
-@fragment
-fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
-    let uv = NormalizedCoords(in.position.xy);
-    
-    // 【前ステップから継承】螺旋パターン
-    let distance = length(uv);
-    let angle = atan2(uv.y, uv.x);
-    let normalized_angle = (angle + PI) / (2.0 * PI);
-    let spiral_pattern = fract(normalized_angle * 3.0 + distance * 5.0);
-    
-    // 【新規追加】格子パターン
-    let grid_size = 6.0;
-    let rotated_uv = rotate_uv(uv, PI * 0.25);       // 45度回転
-    let grid_uv = fract(rotated_uv * grid_size);     // 繰り返し
-    let grid_thickness = 0.1;
-    
-    let grid_x = smoothstep(0.0, grid_thickness, grid_uv.x) * 
-                 smoothstep(grid_thickness, 0.0, grid_uv.x - grid_thickness);
-    let grid_y = smoothstep(0.0, grid_thickness, grid_uv.y) * 
-                 smoothstep(grid_thickness, 0.0, grid_uv.y - grid_thickness);
-    let grid_pattern = max(grid_x, grid_y);
-    
-    // 【新規追加】パターンの合成
-    let combined_pattern = spiral_pattern * 0.7 + grid_pattern * 0.3;
-    
-    // 結晶をイメージした色彩
-    let color = vec3(combined_pattern * 0.3, combined_pattern * 0.8, combined_pattern * 0.6);
-    
-    return vec4(ToLinearRgb(color), 1.0);
-}
+// 新規追加: 回転関数をテスト
+let rotated_uv = rotate_uv(uv, PI * 0.25);  // 45度回転
+
+// 変更: 回転した座標で螺旋パターンを計算
+let distance = length(rotated_uv);
+let angle = atan2(rotated_uv.y, rotated_uv.x);
 ```
+
+**解説**: `rotate_uv()`関数は2D回転行列による座標変換を行います。螺旋パターンが45度回転することで関数の動作が確認できます。
+
+**確認方法**: 螺旋パターンが45度回転して表示されることを確認してください。
+
+---
+
+### Step 3: 基本格子パターンの作成（fractによる繰り返し）
+
+**目標**: `fract()`を使って基本的な格子パターンを生成する
+
+**新規追加コード**:
+```wgsl
+// 新規追加: 格子パターンの基本実装
+let grid_size = 6.0;
+let rotated_uv = rotate_uv(uv, PI * 0.25);  // 45度回転
+let grid_uv = fract(rotated_uv * grid_size); // 繰り返し座標
+
+// 新規追加: step()関数で格子線を作成
+let grid_thickness = 0.1;
+let grid_x = step(0.0, grid_thickness - grid_uv.x) + step(1.0 - grid_thickness, grid_uv.x);
+let grid_y = step(0.0, grid_thickness - grid_uv.y) + step(1.0 - grid_thickness, grid_uv.y);
+let grid_pattern = max(grid_x, grid_y);
+
+// 変更: 格子パターンのみを表示
+let color = vec3(grid_pattern, grid_pattern, grid_pattern);
+```
+
+**解説**: `fract(rotated_uv * grid_size)`で座標を0〜1の範囲で繰り返し、`step()`関数で格子線を作成します。
+
+**確認方法**: 白い格子パターンが45度回転して表示されることを確認してください。
+
+---
+
+### Step 4: smoothstepによる滑らかな格子線の実装
+
+**目標**: `smoothstep()`を使って滑らかで美しい格子線を作成する
+
+**変更コード**:
+```wgsl
+// 変更: smoothstep()による滑らかな格子線
+let grid_x = smoothstep(0.0, grid_thickness, grid_uv.x) * 
+             smoothstep(grid_thickness, 0.0, grid_uv.x - grid_thickness);
+let grid_y = smoothstep(0.0, grid_thickness, grid_uv.y) * 
+             smoothstep(grid_thickness, 0.0, grid_uv.y - grid_thickness);
+let grid_pattern = max(grid_x, grid_y);
+```
+
+**解説**: `smoothstep()`による滑らかなエッジ処理で、美しい格子線を作成します。2つの`smoothstep()`を乗算することで線の太さを制御します。
+
+**確認方法**: Step 3より滑らかで美しい格子線が表示されることを確認してください。
+
+---
+
+### Step 5: 螺旋パターンとの合成
+
+**目標**: 螺旋パターンと格子パターンを重み付きで合成する
+
+**追加コード**:
+```wgsl
+// 再追加: 螺旋パターン（Exercise 1から継承）
+let distance = length(uv);
+let angle = atan2(uv.y, uv.x);
+let normalized_angle = (angle + PI) / (2.0 * PI);
+let spiral_pattern = fract(normalized_angle * 3.0 + distance * 5.0);
+
+// 新規追加: 螺旋と格子の合成（重み付き）
+let combined_pattern = spiral_pattern * 0.7 + grid_pattern * 0.3;
+
+// 変更: 複合パターンを白黒で表示
+let color = vec3(combined_pattern, combined_pattern, combined_pattern);
+```
+
+**解説**: 螺旋パターン70%と格子パターン30%の重み付きで合成します。この比率により、螺旋が主、格子が従の美しいバランスを実現します。
+
+**確認方法**: 螺旋パターンに格子パターンが重なった複合パターンが白黒で表示されることを確認してください。
+
+---
+
+### Step 6: 結晶をイメージした色彩調整（最終完成）
+
+**目標**: 結晶の美しさをイメージした緑〜青系の色彩で完成
+
+**変更コード**:
+```wgsl
+// 変更: 結晶をイメージした緑〜青系の色彩
+let color = vec3(
+    combined_pattern * 0.3,         // 赤成分（低め）
+    combined_pattern * 0.8,         // 緑成分（強め、結晶の色）
+    combined_pattern * 0.6          // 青成分（中程度）
+);
+```
+
+**解説**: RGB成分の比率を調整して結晶のような美しい緑〜青系の色彩を実現します。緑を強めにすることで、自然な結晶の色合いを表現します。
+
+**確認方法**: 美しい緑青色の螺旋+格子の複合パターンが表示されることを確認してください。完成です！
 
 ### 技術解説
 
