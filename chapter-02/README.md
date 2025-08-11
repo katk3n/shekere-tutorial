@@ -6,7 +6,7 @@
 - `Time.duration`の使い方を習得する
 - sin/cos三角関数を使った周期的な変化を作成する
 - 色の遷移やグラデーション効果を理解する
-- 複数の要素を組み合わせた複合アニメーションを作成する
+- 複数の時間効果を組み合わせた総合的な作品を作成する
 
 ---
 
@@ -262,33 +262,6 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
 }
 ```
 
-### 例4: 複合アニメーション
-複数の要素を組み合わせた複雑なアニメーション。
-
-```wgsl
-@fragment
-fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
-    let uv = NormalizedCoords(in.position.xy);
-    let time = Time.duration;
-    
-    // 複数の波動の合成
-    let wave1 = sin(uv.x * 4.0 + time * 1.5);
-    let wave2 = cos(uv.y * 6.0 + time * 2.0);
-    let wave3 = sin(length(uv) * 8.0 - time * 3.0);
-    
-    let combined_wave = (wave1 + wave2 + wave3) / 3.0;
-    let intensity = (combined_wave + 1.0) * 0.5;
-    
-    // 時間による色相の変化
-    let hue_shift = time * 0.5;
-    let red = (sin(intensity * 6.28 + hue_shift) + 1.0) * 0.5;
-    let green = (sin(intensity * 6.28 + hue_shift + 2.09) + 1.0) * 0.5;
-    let blue = (sin(intensity * 6.28 + hue_shift + 4.19) + 1.0) * 0.5;
-    
-    let color = vec3(red, green, blue);
-    return vec4(ToLinearRgb(color), 1.0);
-}
-```
 
 ---
 
@@ -336,7 +309,7 @@ Chapter 2を完了したら、以下を確認してください：
 - [ ] Time.durationの使用方法を理解している
 - [ ] sin/cos関数による周期的変化を作成できる
 - [ ] 色の遷移アニメーションを実装できる
-- [ ] 複数の要素を組み合わせた複合アニメーションを作成できる
+- [ ] 複数の時間効果を組み合わせた総合的な作品を作成できる
 - [ ] 段階的な作品制作を通して1つの完成作品を作れる
 
 ---
@@ -346,9 +319,8 @@ Chapter 2を完了したら、以下を確認してください：
 本章には以下のサンプルプロジェクトが含まれています：
 
 - `examples/01-basic-time/`: 基本的な時間アニメーション
-- `examples/02-sin-cos-animation/`: sin/cos三角関数アニメーション
+- `examples/02-sin-cos-animation/`: sin/cos三角関数アニメーション  
 - `examples/03-color-transition/`: 色の遷移アニメーション
-- `examples/04-complex-animation/`: 複合アニメーション
 
 ## 💡 段階的演習課題
 

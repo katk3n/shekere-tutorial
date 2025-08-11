@@ -1,23 +1,26 @@
 // Chapter 1 Example 2: グラデーション
-// UV座標を利用して画面にグラデーション効果を作成
+// 概念: UV座標による色の線形補間
+// 目標: 座標値を直接色に変換してグラデーション効果を作成
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     // 正規化座標を取得 (-1.0 〜 1.0の範囲)
     let uv = NormalizedCoords(in.position.xy);
     
-    // X座標を赤成分、Y座標を緑成分に変換
-    // -1.0〜1.0 を 0.0〜1.0 の範囲に変換
-    let red = (uv.x + 1.0) * 0.5;
-    let green = (uv.y + 1.0) * 0.5;
-    let blue = 0.2; // 青成分は固定値
+    // 座標値を0.0〜1.0の色範囲に変換
+    let horizontal_gradient = (uv.x + 1.0) * 0.5; // 左=0.0, 右=1.0
     
-    let color = vec3(red, green, blue);
+    // 水平グラデーション: 左が黒、右が赤
+    let color = vec3(horizontal_gradient, 0.0, 0.0);
     
     return vec4(ToLinearRgb(color), 1.0);
 }
 
+// 学習ポイント:
+// - NormalizedCoords(): -1.0〜1.0の正規化座標を取得
+// - (uv.x + 1.0) * 0.5: -1〜1 → 0〜1 への範囲変換
+// - 座標値をそのまま色成分に使用してグラデーション作成
+
 // 実験してみよう:
-// 1. blue成分を変更してみる
-// 2. redとgreenを入れ替えてみる  
-// 3. uv.x * uv.y のような計算を試してみる
+// vec3(0.0, horizontal_gradient, 0.0)  // 緑のグラデーション
+// vec3(horizontal_gradient, horizontal_gradient, 0.0)  // 黄色のグラデーション
