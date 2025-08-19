@@ -1,120 +1,68 @@
-// Chapter 4 Solution 2: 距離計算の応用解答例
-// 演習課題2のオーブ効果とその応用を示すシェーダー
+// 演習 2: 光の星座
+// 「インタラクティブ光現象 - Interactive Light Phenomena」作品への第2ステップ
+// テーマ: 「天の川の誕生 - Birth of the Milky Way」
+// 目標: 前ステップの基本光源に固定位置の光源を追加し、美しい光の星座を構成する
 
-// 基本的なオーブ効果を生成する関数
-fn orb(p: vec2<f32>, p0: vec2<f32>, r: f32, col: vec3<f32>) -> vec3<f32> {
-    let t = clamp(1.0 + r - length(p - p0), 0.0, 1.0);
-    return vec3(pow(t, 16.0) * col);
-}
-
-// 時間による変化を持つオーブ効果
-fn pulsingOrb(p: vec2<f32>, p0: vec2<f32>, r: f32, col: vec3<f32>, time: f32) -> vec3<f32> {
-    let pulse = sin(time * 3.0) * 0.3 + 0.7;  // 0.4〜1.0の範囲で振動
-    let adjusted_radius = r * pulse;
-    return orb(p, p0, adjusted_radius, col);
+// 【新規追加】汎用光源関数
+fn create_light(uv: vec2<f32>, center: vec2<f32>, radius: f32, 
+               intensity: f32, color: vec3<f32>) -> vec3<f32> {
+    let distance = length(uv - center);
+    let normalized_distance = clamp(distance / radius, 0.0, 1.0);
+    let light_strength = pow(1.0 - normalized_distance, 3.0) * intensity;
+    return color * light_strength;
 }
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     let uv = NormalizedCoords(in.position.xy);
     let mouse = MouseCoords();
-    let time = Time.duration;
     
-    // 解答例を選択（以下のいずれかのコメントアウトを解除）
+    // 【前ステップから継承】基本的なマウス追従光源
+    // 演習1の基本光源システムを関数形式で再実装
+    let main_light_radius = 0.4;
+    let main_light_color = vec3(1.0, 0.9, 0.7);    // 暖色系のメイン光源
+    let mouse_light = create_light(uv, mouse, main_light_radius, 1.0, main_light_color);
     
-    // ===== 2-1-1. 赤色のオーブ =====
-    // let red = vec3(1.0, 0.0, 0.0);
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += orb(uv, mouse, 0.07, red);
+    // 【新規追加】固定位置の星座光源
+    // 画面上にバランスよく配置された複数の光源
+    let star1 = create_light(uv, vec2(-0.6, 0.4), 0.2, 0.7, vec3(0.8, 0.9, 1.0));   // 青白い星
+    let star2 = create_light(uv, vec2(0.5, -0.3), 0.15, 0.6, vec3(1.0, 0.8, 0.6));  // 暖かい星
+    let star3 = create_light(uv, vec2(0.0, 0.6), 0.25, 0.5, vec3(0.9, 0.7, 1.0));   // 紫の星
+    let star4 = create_light(uv, vec2(-0.3, -0.5), 0.18, 0.4, vec3(0.7, 1.0, 0.8)); // 緑がかった星
     
-    // ===== 2-1-2. 青色のオーブ =====
-    // let blue = vec3(0.0, 0.0, 1.0);
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += orb(uv, mouse, 0.07, blue);
+    // 【新規追加】全光源の合成
+    // 加算による光の組み合わせで美しい星座を形成
+    var total_light = vec3(0.0, 0.0, 0.0);
     
-    // ===== 2-1-3. 黄色のオーブ =====
-    // let yellow = vec3(1.0, 1.0, 0.0);
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += orb(uv, mouse, 0.07, yellow);
+    // メイン光源（最も明るく、動的）
+    total_light += mouse_light;
     
-    // ===== 2-1-4. サイズ変更例 =====
-    // let green = vec3(0.0, 1.0, 0.0);
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += orb(uv, mouse, 0.1, green);  // 大きなオーブ
+    // 固定星座光源（中程度の明度、静的）
+    total_light += star1;
+    total_light += star2;
+    total_light += star3;
+    total_light += star4;
     
-    // ===== 2-1-5. フォールオフ調整例 =====
-    // fn softOrb(p: vec2<f32>, p0: vec2<f32>, r: f32, col: vec3<f32>) -> vec3<f32> {
-    //     let t = clamp(1.0 + r - length(p - p0), 0.0, 1.0);
-    //     return vec3(pow(t, 4.0) * col);  // 柔らかい効果
-    // }
-    // let green = vec3(0.0, 1.0, 0.0);
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += softOrb(uv, mouse, 0.07, green);
-    
-    // ===== 2-2-1. 固定位置の四隅オーブ =====
-    // let corner1 = vec2(-0.8, -0.8);
-    // let corner2 = vec2(0.8, -0.8);
-    // let corner3 = vec2(-0.8, 0.8);
-    // let corner4 = vec2(0.8, 0.8);
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += orb(uv, corner1, 0.05, vec3(1.0, 0.0, 0.0));  // 赤
-    // col += orb(uv, corner2, 0.05, vec3(0.0, 1.0, 0.0));  // 緑
-    // col += orb(uv, corner3, 0.05, vec3(0.0, 0.0, 1.0));  // 青
-    // col += orb(uv, corner4, 0.05, vec3(1.0, 1.0, 0.0));  // 黄
-    
-    // ===== 2-2-2. マウス追従 + 固定オーブ =====
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += orb(uv, mouse, 0.07, vec3(0.0, 1.0, 0.0));    // マウス追従（緑）
-    // col += orb(uv, vec2(0.0, 0.0), 0.05, vec3(1.0, 0.0, 0.0));  // 中央固定（赤）
-    
-    // ===== 2-2-3. マウス周辺のオーブ =====
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += orb(uv, mouse, 0.07, vec3(1.0, 1.0, 1.0));  // メイン（白）
-    // col += orb(uv, mouse + vec2(0.15, 0.0), 0.04, vec3(1.0, 0.0, 0.0));  // 右（赤）
-    // col += orb(uv, mouse - vec2(0.15, 0.0), 0.04, vec3(0.0, 0.0, 1.0));  // 左（青）
-    
-    // ===== 2-3-1. グラデーション効果 =====
-    // let distance = length(uv - mouse);
-    // let color1 = vec3(1.0, 0.0, 0.0);  // 赤
-    // let color2 = vec3(0.0, 0.0, 1.0);  // 青
-    // let factor = clamp(distance / 1.4, 0.0, 1.0);
-    // let col = mix(color1, color2, factor);
-    
-    // ===== 2-3-2. パルス効果 =====
-    // let pulse = sin(time * 4.0) * 0.5 + 0.5;
-    // let radius = 0.05 + 0.03 * pulse;
-    // let green = vec3(0.0, 1.0, 0.0);
-    // var col = vec3(0.0, 0.0, 0.0);
-    // col += orb(uv, mouse, radius, green);
-    
-    // ===== 発展例: 複合効果 =====
-    var col = vec3(0.0, 0.0, 0.0);
-    
-    // パルスするメインオーブ
-    col += pulsingOrb(uv, mouse, 0.07, vec3(1.0, 1.0, 1.0), time);
-    
-    // 回転するサブオーブ
-    let angle = time * 2.0;
-    let orbit_radius = 0.2;
-    let sub_pos = mouse + vec2(cos(angle), sin(angle)) * orbit_radius;
-    col += orb(uv, sub_pos, 0.03, vec3(0.0, 1.0, 0.0));
-    
-    // 距離によるグラデーション背景
-    let distance = length(uv - mouse);
-    let background_color = vec3(0.0, 0.0, 0.1) * (1.0 - clamp(distance / 1.0, 0.0, 1.0));
-    col += background_color;
-    
-    return vec4(ToLinearRgb(col), 1.0);
+    return vec4(ToLinearRgb(total_light), 1.0);
 }
 
-// 使用方法:
-// 1. 上記のコメントアウトを1つずつ解除して効果を確認
-// 2. orb関数のパラメータを変更して効果を調整
-// 3. 複数の効果を組み合わせて独自パターンを作成
+// 【技術ポイント】:
+// - 前ステップから継承: マウス追従による基本光源システム
+// - create_light(): パラメータ化された再利用可能な光源関数
+// - 固定座標: vec2(-0.6, 0.4)などによる戦略的配置
+// - 光源の個性化: 異なる半径・強度・色による多様性
+// - 加算合成: total_light += で光を重ね合わせ
+// - 光の階層: メイン光源 > 副次光源のバランス
 
-// 学習ポイント:
-// - clamp() で値の範囲制限
-// - pow() で指数関数による滑らかな変化
-// - mix() で色のブレンド
-// - sin() で周期的な変化
-// - 複数のオーブの加算による複合効果
+// 【実験してみよう】:
+// 1. 光源の数を変更: star5, star6を追加して光の密度を上げる
+// 2. 配置パターン変更: 円形配置 vec2(cos(angle), sin(angle))を試す
+// 3. 色の調和を変更: 補色関係や単色グラデーションを試す
+// 4. 強度バランス変更: メイン光源を0.8に下げて固定光源を目立たせる
+// 5. 半径の調整: 大きな光源と小さな光源を混在させる
+
+// 【次のステップへの準備】:
+// このコードは演習3で継承・拡張されます：
+// - この光の星座システムを保持
+// - 時間による動的な色彩変化を追加
+// - 光源間の色彩相互作用を実装
