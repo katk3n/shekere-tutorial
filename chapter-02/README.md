@@ -6,7 +6,7 @@
 - `Time.duration`の使い方を習得する
 - sin/cos三角関数を使った周期的な変化を作成する
 - 色の遷移やグラデーション効果を理解する
-- 複数の要素を組み合わせた複合アニメーションを作成する
+- 複数の時間効果を組み合わせた総合的な作品を作成する
 
 ---
 
@@ -262,33 +262,6 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
 }
 ```
 
-### 例4: 複合アニメーション
-複数の要素を組み合わせた複雑なアニメーション。
-
-```wgsl
-@fragment
-fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
-    let uv = NormalizedCoords(in.position.xy);
-    let time = Time.duration;
-    
-    // 複数の波動の合成
-    let wave1 = sin(uv.x * 4.0 + time * 1.5);
-    let wave2 = cos(uv.y * 6.0 + time * 2.0);
-    let wave3 = sin(length(uv) * 8.0 - time * 3.0);
-    
-    let combined_wave = (wave1 + wave2 + wave3) / 3.0;
-    let intensity = (combined_wave + 1.0) * 0.5;
-    
-    // 時間による色相の変化
-    let hue_shift = time * 0.5;
-    let red = (sin(intensity * 6.28 + hue_shift) + 1.0) * 0.5;
-    let green = (sin(intensity * 6.28 + hue_shift + 2.09) + 1.0) * 0.5;
-    let blue = (sin(intensity * 6.28 + hue_shift + 4.19) + 1.0) * 0.5;
-    
-    let color = vec3(red, green, blue);
-    return vec4(ToLinearRgb(color), 1.0);
-}
-```
 
 ---
 
@@ -330,15 +303,14 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
 
 ---
 
-## 8. 次のステップ
+## 8. 学習達成目標
 
 Chapter 2を完了したら、以下を確認してください：
 - [ ] Time.durationの使用方法を理解している
 - [ ] sin/cos関数による周期的変化を作成できる
 - [ ] 色の遷移アニメーションを実装できる
-- [ ] 複数の要素を組み合わせた複合アニメーションを作成できる
-
-次章では、座標系とパターン生成について学習します。
+- [ ] 複数の時間効果を組み合わせた総合的な作品を作成できる
+- [ ] 段階的な作品制作を通して1つの完成作品を作れる
 
 ---
 
@@ -347,14 +319,35 @@ Chapter 2を完了したら、以下を確認してください：
 本章には以下のサンプルプロジェクトが含まれています：
 
 - `examples/01-basic-time/`: 基本的な時間アニメーション
-- `examples/02-sin-cos-animation/`: sin/cos三角関数アニメーション
+- `examples/02-sin-cos-animation/`: sin/cos三角関数アニメーション  
 - `examples/03-color-transition/`: 色の遷移アニメーション
-- `examples/04-complex-animation/`: 複合アニメーション
 
-## 10. 演習課題
+## 💡 段階的演習課題
 
-- `exercises/exercise-01.md`: 基本的な時間アニメーションの応用
-- `exercises/exercise-02.md`: sin/cosを使った様々なパターン作成
-- `exercises/exercise-03.md`: 創作課題
+**作品目標**: 複合螺旋パターン作品
 
-各演習の解答例は`solutions/`フォルダにあります。
+以下の4つの演習を段階的に進めることで、1つの美しい螺旋アニメーション作品を完成させます。各ステップでは前のステップのコードを修正・拡張して進めます：
+
+### [演習1: 静止パターンの作成](./exercises/01-static-patterns/)
+**基礎作り**: 時間要素なしの基本波動パターンを作成
+- 極座標系での基本パターン（同心円・放射線）
+- 静的な数学的パターンの理解
+- 次ステップでの時間追加の準備
+
+### [演習2: 基本時間アニメーション](./exercises/02-time-animation/)
+**動きの追加**: 前ステップの静止パターンに時間要素を追加
+- 前ステップのコードを基礎として使用
+- `Time.duration`による基本的な時間変化
+- sin/cos関数による周期的アニメーション
+
+### [演習3: 複雑時間効果](./exercises/03-complex-time-effects/)
+**高度化**: 単純な時間効果を複雑な効果に発展
+- 前ステップのアニメーションを基礎として使用
+- 複数の時間効果の組み合わせ
+- 同心円・放射線・螺旋の統合
+
+### [演習4: 最終螺旋作品](./exercises/04-final-spiral-artwork/)
+**完成**: 高度な技術で螺旋作品を完成
+- 前ステップの複雑効果を基礎として使用
+- 美しい色相回転システムの実装
+- 最終的な複合螺旋パターンの完成

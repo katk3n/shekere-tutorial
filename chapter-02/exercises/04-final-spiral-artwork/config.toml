@@ -1,0 +1,15 @@
+# Chapter 2 Exercise 4: 最終螺旋作品の完成
+
+[window]
+width = 800
+height = 600
+title = "Chapter 2 Exercise 4: 最終螺旋作品の完成"
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Final Spiral Artwork Shader"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true

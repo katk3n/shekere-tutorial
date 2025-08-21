@@ -1,73 +1,48 @@
-// Chapter 4 Solution 1: 基本的なマウス追従効果の解答例
-// 演習課題1の様々な解答パターンを示すシェーダー
+// 演習 1: 基本光源
+// 「インタラクティブ光現象 - Interactive Light Phenomena」作品への第1ステップ
+// テーマ: 「最初の光 - The First Light」
+// 目標: MouseCoords()とlength()を使ってマウスに追従する美しい光源を作成する
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     let uv = NormalizedCoords(in.position.xy);
     let mouse = MouseCoords();
     
-    // 解答例を選択（以下のいずれかのコメントアウトを解除）
+    // マウス位置からの距離を計算
+    let distance = length(uv - mouse);
     
-    // ===== 1-1-1. X座標のみで色変化 =====
-    // let red = (mouse.x + 1.0) * 0.5;
-    // let color = vec3(red, 0.3, 0.3);
+    // 光の基本パラメータ
+    let light_radius = 0.4;                    // 光の半径
+    let falloff_power = 3.0;                   // 減衰の急峻さ
     
-    // ===== 1-1-2. Y座標のみで色変化 =====
-    // let green = (mouse.y + 1.0) * 0.5;
-    // let color = vec3(0.3, green, 0.3);
+    // 距離に基づく光の強度計算
+    let normalized_distance = clamp(distance / light_radius, 0.0, 1.0);
+    let light_intensity = pow(1.0 - normalized_distance, falloff_power);
     
-    // ===== 1-1-3. 反転効果 =====
-    // let blue = 1.0 - (mouse.x + 1.0) * 0.5;  // X座標の反転
-    // let color = vec3(0.3, 0.3, blue);
+    // 暖かい光の色彩
+    let light_color = vec3(1.0, 0.9, 0.7);    // 暖色系の光
     
-    // ===== 1-2-1. 中心からの距離による明度変化 =====
-    // let center_distance = length(uv);
-    // let brightness = 1.0 - clamp(center_distance, 0.0, 1.0);
-    // let color = vec3(brightness, brightness, brightness);
+    // 最終的な光の色を計算
+    let final_color = light_color * light_intensity;
     
-    // ===== 1-2-2. マウスからの距離による色変化 =====
-    // let mouse_distance = length(uv - mouse);
-    // let normalized_distance = clamp(mouse_distance / 1.4, 0.0, 1.0);
-    // let red = 1.0 - normalized_distance;
-    // let blue = normalized_distance;
-    // let color = vec3(red, 0.3, blue);
-    
-    // ===== 1-3-1. 虹色効果 =====
-    // let hue = (mouse.x + 1.0) * 0.5;
-    // let color = vec3(
-    //     sin(hue * 6.28) * 0.5 + 0.5,
-    //     sin(hue * 6.28 + 2.09) * 0.5 + 0.5,
-    //     sin(hue * 6.28 + 4.19) * 0.5 + 0.5
-    // );
-    
-    // ===== 1-3-2. スポットライト効果 =====
-    // let spotlight_distance = length(uv - mouse);
-    // let spotlight_radius = 0.3;
-    // let spotlight_intensity = 1.0 - clamp(spotlight_distance / spotlight_radius, 0.0, 1.0);
-    // let color = vec3(spotlight_intensity, spotlight_intensity, spotlight_intensity);
-    
-    // ===== 発展例: 複合効果 =====
-    let mouse_distance = length(uv - mouse);
-    let center_distance = length(uv);
-    let angle = atan2(uv.y - mouse.y, uv.x - mouse.x);
-    
-    let red = 1.0 - clamp(mouse_distance, 0.0, 1.0);
-    let green = sin(angle * 3.0) * 0.5 + 0.5;
-    let blue = 1.0 - clamp(center_distance, 0.0, 1.0);
-    let color = vec3(red, green, blue);
-    
-    return vec4(ToLinearRgb(color), 1.0);
+    return vec4(ToLinearRgb(final_color), 1.0);
 }
 
-// 使用方法:
-// 1. 上記のコメントアウトを1つずつ解除して効果を確認
-// 2. マウスを動かして各効果の動作を観察
-// 3. 数値を変更して効果の変化を実験
-// 4. 複数の効果を組み合わせた独自パターンを作成
+// 【技術ポイント】:
+// - MouseCoords(): マウスの正規化座標を取得（-1.0〜1.0の範囲）
+// - length(uv - mouse): マウス位置からピクセルへの距離を計算
+// - clamp(): 距離を0.0〜1.0の範囲に正規化
+// - pow(): 指数関数による滑らかな減衰カーブ
+// - 暖色系の光色による自然な光の表現
 
-// 学習ポイント:
-// - (mouse.x + 1.0) * 0.5 で -1.0〜1.0 を 0.0〜1.0 に変換
-// - length() で距離計算
-// - clamp() で値の範囲制限
-// - sin() で周期的な変化
-// - atan2() で角度計算
+// 【実験してみよう】:
+// 1. 光の半径を変更: light_radius を 0.2, 0.6, 0.8 など
+// 2. 減衰の急峻さを変更: falloff_power を 1.5, 4.0, 6.0 など
+// 3. 光の色を変更: 冷色系 vec3(0.7, 0.9, 1.0) や純白 vec3(1.0, 1.0, 1.0)
+// 4. 複数の要素を組み合わせて理想的な光を作成
+
+// 【次のステップへの準備】:
+// このコードは演習2で継承・拡張されます：
+// - この基本光源を保持
+// - 固定位置の光源を複数追加
+// - 光源間の相互作用を実装

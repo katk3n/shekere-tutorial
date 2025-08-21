@@ -1,137 +1,124 @@
-// Chapter 4 Solution 3: オリジナルインタラクティブパターン解答例
-// 作品名: 「コズミックダンス (Cosmic Dance)」
-// テーマ: 宇宙的な視覚効果とインタラクティブな星の踊り
+// 演習 3: 色彩調和
+// 「インタラクティブ光現象 - Interactive Light Phenomena」作品への第3ステップ
+// テーマ: 「光のシンフォニー - Symphony of Light」
+// 目標: 前ステップの光の星座に動的な色彩変化システムを追加し、インタラクティブな色彩調和を実現する
 
-// 基本的なオーブ効果（星を表現）
-fn star(p: vec2<f32>, center: vec2<f32>, radius: f32, intensity: f32) -> f32 {
-    let distance = length(p - center);
-    let falloff = 1.0 / (1.0 + distance * distance / (radius * radius));
-    return falloff * intensity;
-}
-
-// 回転する星座パターン
-fn constellation(uv: vec2<f32>, center: vec2<f32>, time: f32, size: f32) -> vec3<f32> {
-    var color = vec3(0.0, 0.0, 0.0);
-    
-    // 5つの星で構成される星座
-    for (var i = 0; i < 5; i++) {
-        let angle = f32(i) * 1.256 + time * 0.5;  // 72度間隔で回転
-        let distance = size * 0.3;
-        let star_pos = center + vec2(cos(angle), sin(angle)) * distance;
-        
-        // 星の色を少しずつ変化
-        let hue = f32(i) * 0.2 + time * 0.3;
-        let star_color = vec3(
-            sin(hue) * 0.5 + 0.5,
-            sin(hue + 2.09) * 0.5 + 0.5,
-            sin(hue + 4.19) * 0.5 + 0.5
-        );
-        
-        color += star(uv, star_pos, 0.02, 0.3) * star_color;
-    }
-    
-    return color;
-}
-
-// 粒子効果（星屑を表現）
-fn stardust(uv: vec2<f32>, center: vec2<f32>, time: f32) -> f32 {
+// 【前ステップから継承】汎用光源関数
+fn create_light(uv: vec2<f32>, center: vec2<f32>, radius: f32, 
+               intensity: f32, color: vec3<f32>) -> vec3<f32> {
     let distance = length(uv - center);
-    let angle = atan2(uv.y - center.y, uv.x - center.x);
-    
-    // 螺旋状の粒子分布
-    let spiral = sin(angle * 8.0 + distance * 10.0 - time * 3.0);
-    let falloff = 1.0 / (1.0 + distance * 3.0);
-    
-    return max(0.0, spiral) * falloff * 0.2;
+    let normalized_distance = clamp(distance / radius, 0.0, 1.0);
+    let light_strength = pow(1.0 - normalized_distance, 3.0) * intensity;
+    return color * light_strength;
 }
 
-// 宇宙の背景（ネビュラ効果）
-fn nebula(uv: vec2<f32>, time: f32) -> vec3<f32> {
-    let noise1 = sin(uv.x * 5.0 + time * 0.7) * sin(uv.y * 5.0 + time * 0.5);
-    let noise2 = sin(uv.x * 8.0 - time * 0.3) * sin(uv.y * 8.0 + time * 0.8);
+// 【新規追加】HSV色空間からRGB色空間への変換関数
+fn hsv_to_rgb(h: f32, s: f32, v: f32) -> vec3<f32> {
+    let c = v * s;
+    let x = c * (1.0 - abs(fract(h / 60.0) * 2.0 - 1.0));
+    let m = v - c;
     
-    let purple = vec3(0.4, 0.1, 0.6);
-    let blue = vec3(0.1, 0.2, 0.8);
+    var rgb = vec3<f32>(0.0);
+    if (h >= 0.0 && h < 60.0) { rgb = vec3(c, x, 0.0); }
+    else if (h >= 60.0 && h < 120.0) { rgb = vec3(x, c, 0.0); }
+    else if (h >= 120.0 && h < 180.0) { rgb = vec3(0.0, c, x); }
+    else if (h >= 180.0 && h < 240.0) { rgb = vec3(0.0, x, c); }
+    else if (h >= 240.0 && h < 300.0) { rgb = vec3(x, 0.0, c); }
+    else if (h >= 300.0 && h < 360.0) { rgb = vec3(c, 0.0, x); }
     
-    let factor = (noise1 + noise2) * 0.5 + 0.5;
-    return mix(purple, blue, factor) * 0.1;
+    return rgb + vec3(m);
 }
 
-// エネルギー波動効果
-fn energyWave(uv: vec2<f32>, center: vec2<f32>, time: f32) -> f32 {
-    let distance = length(uv - center);
-    let wave = sin(distance * 15.0 - time * 8.0);
-    let pulse = sin(time * 3.0) * 0.3 + 0.7;
-    let falloff = 1.0 / (1.0 + distance * 2.0);
+// 【新規追加】距離による色彩相互作用を計算する関数
+fn get_interactive_color(base_hue: f32, mouse_pos: vec2<f32>, star_pos: vec2<f32>) -> vec3<f32> {
+    let distance = length(mouse_pos - star_pos);
+    let influence = 1.0 - clamp(distance / 2.0, 0.0, 1.0);
     
-    return max(0.0, wave) * falloff * pulse * 0.15;
+    // マウス位置の色相と固定光源の基本色相をブレンド
+    let mouse_hue = (mouse_pos.x + 1.0) * 180.0;
+    let blended_hue = mix(base_hue, mouse_hue, influence * 0.6);
+    
+    return hsv_to_rgb(blended_hue, 0.9, 1.0);
 }
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     let uv = NormalizedCoords(in.position.xy);
     let mouse = MouseCoords();
-    let time = Time.duration;
     
-    // 基本的な宇宙背景
-    var color = nebula(uv, time);
+    // 【新規追加】マウス位置による動的色相システム
+    let base_hue = (mouse.x + 1.0) * 180.0;  // -1〜1 を 0〜360度に変換
     
-    // メインの星座（マウス位置に追従）
-    let mouse_distance = length(uv - mouse);
-    let constellation_size = 0.5 + 0.3 * sin(time * 1.5);
-    color += constellation(uv, mouse, time, constellation_size);
+    // 【継承+新規追加】動的色彩を持つメイン光源
+    // 演習2の基本光源にHSV色空間による動的色彩を追加
+    let main_light_color = hsv_to_rgb(base_hue, 0.8, 1.0);
+    let mouse_light = create_light(uv, mouse, 0.4, 1.0, main_light_color);
     
-    // 中央の固定星座
-    let center_constellation = constellation(uv, vec2(0.0, 0.0), time * 0.7, 0.3);
-    color += center_constellation * 0.6;
+    // 【継承+新規追加】固定星座光源（色彩相互作用付き）
+    // 演習2の固定光源に距離ベースの色彩変化を追加
+    let star1_pos = vec2(-0.6, 0.4);
+    let star1_base_hue = 240.0;  // 青系
+    let star1_color = get_interactive_color(star1_base_hue, mouse, star1_pos);
+    let star1 = create_light(uv, star1_pos, 0.2, 0.7, star1_color);
     
-    // マウス位置からの星屑効果
-    let dust = stardust(uv, mouse, time);
-    color += vec3(dust, dust * 0.8, dust * 0.6);
+    let star2_pos = vec2(0.5, -0.3);
+    let star2_base_hue = 30.0;   // オレンジ系
+    let star2_color = get_interactive_color(star2_base_hue, mouse, star2_pos);
+    let star2 = create_light(uv, star2_pos, 0.15, 0.6, star2_color);
     
-    // エネルギー波動
-    let wave = energyWave(uv, mouse, time);
-    color += vec3(wave * 0.8, wave, wave * 0.6);
+    let star3_pos = vec2(0.0, 0.6);
+    let star3_base_hue = 300.0;  // 紫系
+    let star3_color = get_interactive_color(star3_base_hue, mouse, star3_pos);
+    let star3 = create_light(uv, star3_pos, 0.25, 0.5, star3_color);
     
-    // 中心からの光の柱
-    let center_distance = length(uv);
-    let light_column = 1.0 / (1.0 + center_distance * 10.0);
-    color += vec3(light_column * 0.05, light_column * 0.1, light_column * 0.2);
+    let star4_pos = vec2(-0.3, -0.5);
+    let star4_base_hue = 120.0;  // 緑系
+    let star4_color = get_interactive_color(star4_base_hue, mouse, star4_pos);
+    let star4 = create_light(uv, star4_pos, 0.18, 0.4, star4_color);
     
-    // マウス位置の強力な星（太陽のような効果）
-    let sun_intensity = star(uv, mouse, 0.08, 1.0);
-    let sun_color = vec3(1.0, 0.8, 0.2) * sun_intensity;
-    color += sun_color;
+    // 【新規追加】色彩調和による補完光源
+    // 補色関係による美しい対比効果
+    let complementary_hue = fract((base_hue + 180.0) / 360.0) * 360.0;
+    let complementary_color = hsv_to_rgb(complementary_hue, 0.6, 0.8);
+    let complementary_light = create_light(uv, vec2(0.7, 0.2), 0.12, 0.3, complementary_color);
     
-    // 画面端の暗いビネット効果
-    let vignette = 1.0 - pow(length(uv) / 1.4, 2.0);
-    color *= vignette;
+    // 【前ステップから継承】全光源の合成
+    var total_light = vec3(0.0, 0.0, 0.0);
     
-    // 最終的な色の調整
-    color = clamp(color, vec3(0.0), vec3(1.0));
+    // メイン光源（最も明るく、動的色相）
+    total_light += mouse_light;
     
-    return vec4(ToLinearRgb(color), 1.0);
+    // 固定星座光源（色彩相互作用付き）
+    total_light += star1;
+    total_light += star2;
+    total_light += star3;
+    total_light += star4;
+    
+    // 補色調和光源
+    total_light += complementary_light;
+    
+    return vec4(ToLinearRgb(total_light), 1.0);
 }
 
-// 作品解説:
-// 「コズミックダンス」は宇宙空間での星々の踊りを表現したインタラクティブ作品です。
-// 
-// 主な特徴:
-// - マウス位置に追従する主星座とエネルギー効果
-// - 中央の固定星座による対称性
-// - 時間による星の色変化と回転
-// - 螺旋状の星屑エフェクト
-// - ネビュラ（星雲）による宇宙背景
-// - エネルギー波動による動的効果
-// 
-// 技術的要素:
-// - 複数の関数による効果の階層化
-// - 三角関数による回転と周期的変化
-// - 距離計算による放射状効果
-// - 色相変化による美しい視覚効果
-// - ビネット効果による画面の引き締め
-// 
-// インタラクション:
-// - マウス移動により星座と効果が追従
-// - 時間経過による自動的な変化
-// - 複数の効果の組み合わせによる豊かな表現
+// 【技術ポイント】:
+// - 前ステップから継承: 光の星座システムとcreate_light()関数
+// - HSV色空間: より直感的な色相・彩度・明度の制御
+// - 動的色相: マウスX座標 → 0〜360度の色相変化
+// - 色彩相互作用: マウスと固定光源の距離による色のブレンド
+// - 色彩調和: 補色関係による美しい対比効果
+// - mix()関数: 2つの色相の滑らかなブレンド
+
+// 【実験してみよう】:
+// 1. 色相範囲を変更: base_hue を (mouse.x + 1.0) * 120.0 で限定色相
+// 2. 彩度を調整: hsv_to_rgb()の第2引数を0.4〜1.0で変更
+// 3. 相互作用範囲を変更: distance / 2.0 → distance / 1.5, distance / 3.0
+// 4. 類似色関係を追加: base_hue ± 30度の色相で類似色光源を作成
+// 5. Y軸活用: mouse.yを彩度や明度の制御に使用
+// 6. 複数補色: 分裂補色（base_hue ± 150度）を試す
+
+// 【次のステップへの準備】:
+// このコードは演習4で継承・拡張されます：
+// - この動的色彩システムを保持
+// - Time.durationによる時間軸の追加
+// - パーティクル効果やエネルギー波動の実装
+// - 完成されたインタラクティブ光アート作品への仕上げ

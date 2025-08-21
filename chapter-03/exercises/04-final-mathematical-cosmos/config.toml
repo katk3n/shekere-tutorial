@@ -1,0 +1,13 @@
+[window]
+title = "Chapter 3 - Exercise 4: Final Flower Artwork"
+width = 800
+height = 600
+
+[[pipeline]]
+shader_type = "fragment"
+label = "Creative Pattern: Flower of Life"
+entry_point = "fs_main"
+file = "fragment.wgsl"
+
+[hot_reload]
+enabled = true

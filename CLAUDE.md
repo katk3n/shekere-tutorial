@@ -82,6 +82,13 @@ For creating accurate learning content, refer to the official shekere framework 
 - Live coding experience using hot reload functionality
 - Immediate visual feedback learning environment
 
+### Progressive Artwork Creation
+- **Structured Exercise Approach**: Each chapter features exercises that progressively build a complete artwork
+- **Step-by-Step Development**: Learners create one cohesive piece through multiple stages, seeing tangible progress at each step
+- **Technical Integration**: Each step introduces new technical concepts while building upon previous work
+- **Achievement-Oriented Learning**: Clear milestone completion provides motivation and sense of accomplishment
+- **Iterative Code Development**: Each exercise step requires learners to modify and extend the code from the previous step, ensuring continuous progression rather than starting from scratch
+
 ### Self-Directed Learning Philosophy
 - **No formal submission requirements**: All exercises are designed for personal learning and skill development
 - **Self-paced progression**: Learners can move through content at their own speed
@@ -95,6 +102,32 @@ For creating accurate learning content, refer to the official shekere framework 
 
 ## Content Structure
 
+### Examples vs Exercises Design Philosophy
+
+**Examples (理論例)**:
+- **Purpose**: Pure theoretical demonstrations of individual techniques
+- **Scope**: Single concept focus with minimal code complexity
+- **Code Length**: Typically 10-20 lines of core shader code
+- **Complexity**: As simple as possible while demonstrating the concept clearly
+- **Role**: Enable learners to understand "what this technique does" and "why it's useful"
+- **Independence**: Each example stands alone and doesn't depend on others
+- **Usage**: Quick reference and concept verification during learning
+
+**Exercises (演習課題)**:
+- **Purpose**: Practical application through progressive artwork creation
+- **Scope**: Multi-technique integration building complete artworks
+- **Code Length**: Progressive complexity, from simple to advanced (20-100+ lines)
+- **Complexity**: Deliberately increases with each step to build mastery
+- **Role**: Enable learners to apply techniques in creative, meaningful contexts
+- **Progression**: Each exercise step builds upon the previous step's code
+- **Usage**: Hands-on skill development and portfolio creation
+
+**Key Principles**:
+- **Clear Separation**: Examples focus on theory, exercises focus on practice
+- **Complementary Learning**: Examples provide understanding, exercises provide experience
+- **Optimal Cognitive Load**: Simple examples prevent confusion, progressive exercises build confidence
+- **Learner Guidance**: Clear role distinction helps learners know where to focus their attention
+
 ### Directory Structure
 ```
 shekere-tutorial/
@@ -106,13 +139,14 @@ shekere-tutorial/
 │   │   ├── 01-solid-color/
 │   │   ├── 02-gradient/
 │   │   └── 03-uv-visualization/
-│   └── exercises/ (exercise problems with solutions - Japanese)
-│       ├── 01-favorite-colors/
-│       │   ├── README.md (exercise description)
+│   └── exercises/ (progressive artwork creation - Japanese)
+│       ├── 01-basic-circle/
+│       │   ├── README.md (step description)
 │       │   ├── config.toml (shekere configuration)
-│       │   └── fragment.wgsl (solution example)
-│       ├── 02-gradient-variations/
-│       └── 03-creative-challenge/
+│       │   └── fragment.wgsl (step implementation)
+│       ├── 02-concentric-circles/
+│       ├── 03-radial-pattern/
+│       └── 04-final-polish/
 ├── chapter-02/ (similar structure)
 ├── chapter-03/ (similar structure) 
 ├── chapter-04/ (similar structure)
@@ -126,8 +160,11 @@ shekere-tutorial/
 1. **理論解説 (Theory Explanation)**: Concept and WGSL syntax explanation in Japanese
 2. **サンプルコード (Sample Code)**: Working shekere projects with Japanese comments
 3. **ステップバイステップ解説 (Step-by-Step Breakdown)**: Detailed code explanation in Japanese
-4. **演習課題 (Exercises)**: Self-contained exercise directories with both problem description and solution example in Japanese
-5. **発展課題 (Advanced Challenges)**: Creative freedom projects in Japanese
+4. **演習課題 (Exercises)**: Progressive artwork creation through multiple steps, each building upon the previous step in Japanese
+   - **Code Progression Pattern**: Each step requires modifying the previous step's code rather than independent implementations
+   - **Cumulative Learning**: Students copy and modify code from Step N to create Step N+1
+   - **Technical Evolution**: Each step adds specific new techniques while preserving previous functionality
+5. **発展課題 (Advanced Challenges)**: Creative freedom projects and variations in Japanese
 
 ## Target Audience
 
@@ -198,6 +235,7 @@ When creating or updating chapters, ensure the following maintenance tasks are c
    - Ensure new content follows the established structure and format
    - Maintain consistent terminology and coding style
    - Verify that all examples are tested and functional
+   - **Exercise Code Progression**: Ensure each exercise step builds upon the previous step's code with clear "前ステップから継承" (inherited from previous step) and "新規追加" (newly added) annotations in comments
 
 ### README.md Update Checklist
 When adding a new chapter, the top-level README.md must be updated with:
